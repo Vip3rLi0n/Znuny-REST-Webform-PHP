@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ticket Form</title>
+</head>
+<body>
+    <h1>Form</h1>
+    <form method="post" action="form.php">
+        Title: <input type="text" name="Title"><br><br/>
+        Email: <input type="text" name="Email"><br><br/>
+        <label for="Queue">Queue:</label>
+        <select id="Queue" name="queue">
+          <option id="raw">Raw</option>
+          <option id="postmaster">Postmaster</option>
+          <option id="misc">Misc</option>
+          <option id="junk">Junk</option>
+        </select><br><br/>
+        Article Title: <input type="text" name="ArticleTitle"><br><br/>
+        Article Field: <input type="text" name="ArticleField"><br><br/>
+        <br/>
+        <input type="submit" value="submit">
+    </form>
+</body>
+</html>

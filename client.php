@@ -28,12 +28,12 @@ $body = json_encode(
  */
 $response = Request::post($BaseURL."/Session", $headers, $body);
 if (!$response->body||!property_exists($response->body,'SessionID')) {
-    print "No SessionID were received. \n";
+    print "No SessionID were received. \n<br>";
     exit(1);
 }
 $SessionID = $response->body->SessionID;
-print "\nNotice: \n";
-print "SessionID obtained. Your SessionID is $SessionID\n";
+print "\nNotice: \n"<br>;
+print "SessionID obtained. Your SessionID is $SessionID\n<br><br>";
 
 
 
@@ -42,13 +42,18 @@ print "SessionID obtained. Your SessionID is $SessionID\n";
  *
  * https://doc.otrs.com/doc/api/otrs/6.0/Perl/Kernel/GenericInterface/Operation/Ticket/TicketCreate.pm.html
  */
-$attachment = file_get_contents("README.md");
+$Title= $_POST['Title'];
+$CustomerUser= $_POST['CustomerUser'];
+$Queue= $_POST['Queue'];
+$ArticleTitle= $_POST['ArticleTitle'];
+$ArticleField= $_POST['ArticleField'];
+echo ("Your ticket has been sent.\n<br>");
 $body = json_encode([
         'SessionID' => $SessionID,
         'Ticket' => [
-            'Title' => 'Example ticket from PHP',
-            'Queue' => 'Misc',
-            'CustomerUser' => 'customer@test.com',
+            'Title' => $Title,
+            'Queue' => $Queue,
+            'CustomerUser' => $CustomerUser,
             'State' => 'new',
             'Priority' => '3 normal',
             'OwnerID' => 1,
@@ -57,17 +62,12 @@ $body = json_encode([
             'CommunicationChannel' => 'Email',
             'ArticleTypeID' => 1,
             'SenderTypeID' => 1,
-            'Subject' => 'Example',
-            'Body' => 'This is a GenericInterface example.',
+            'Subject' => $ArticleTitle,
+            'Body' => $ArticleField,
             'ContentType' => 'text/plain; charset=utf8',
             'Charset' => 'utf8',
             'MimeType' => 'text/plain',
-            'From' => 'root@localhost',
-        ],
-        'Attachment' => [
-            'Content' => base64_encode($attachment),
-            'ContentType' => 'text/plain',
-            'Filename' => 'README.md'
+            'From' => $CustomerUser,
         ],
     ]
 );
@@ -77,43 +77,18 @@ if ($response->body && property_exists($response->body, 'Error')) {
     $ErrorCode = $response->body->Error->ErrorCode;
     $ErrorMessage = $response->body->Error->ErrorMessage;
     print "\n\n";
-    print "ErrorCode $ErrorCode\n\n";
-    print "ErrorMessage $ErrorMessage\n\n";
+    print "ErrorCode $ErrorCode\n\n<br>";
+    print "ErrorMessage $ErrorMessage\n\n<br>";
     print "\n\n";
     exit(1);
 }
 $TicketNumber = $response->body->TicketNumber;
 $TicketID = $response->body->TicketID;
 $ArticleID = $response->body->ArticleID;
-print "\nNotice: \n";
-print "\nThe ticket $TicketNumber was created. Check it via https://$FQDN/otrs/index.pl?Action=AgentTicketZoom;TicketID=$TicketID\n\n";
+print "<br>\nNotice: \n<br>";
+print "\nThe ticket $TicketNumber was created. Check it via https://$FQDN/otrs/index.pl?Action=AgentTicketZoom;TicketID=$TicketID\n\n<br>br>";
 
 
-
-/**
-*
-* TicketUpdate (Moving ticket to another queue, and also state of the ticket)
-*
-**/
-$param = json_encode([
-        'SessionID' => $SessionID,
-        'Ticket' => [
-                'Queue' => 'Warehouse',
-                'State' => 'new'
-        ]
-]);
-$response = Unirest\Request::patch($BaseURL."/Ticket/${TicketID}", $headers, null, $param);
-if ($response->body && property_exists($response->body, 'Error')) {
-    $ErrorCode = $response->body->Error->ErrorCode;
-    $ErrorMessage = $response->body->Error->ErrorMessage;
-    print "\n\n";
-    print "ErrorCode $ErrorCode\n\n";
-    print "ErrorMessage $ErrorMessage\n\n";
-    print "\n\n";
-    exit(1);
-}
-print "\nNotice: \n";
-print "\nThe ticket was moved to the queue 'Warehouse' and the state are changed to 'new'\n";
 
 /**
  * TicketGet
@@ -128,16 +103,16 @@ if ($response->body && property_exists($response->body, 'Error')) {
         $ErrorCode = $response->body->Error->ErrorCode;
         $ErrorMessage = $response->body->Error->ErrorMessage;
         print "\n\n";
-        print "ErrorCode $ErrorCode\n\n";
-        print "ErrorMessage $ErrorMessage\n\n";
+        print "ErrorCode $ErrorCode\n\n<br>";
+        print "ErrorMessage $ErrorMessage\n\n<br>";
         print "\n\n";
         exit(1);
 }
 $TicketData = $response->body->Ticket[0];
-print "\nTicket Details:\n";
+print "<br>\nTicket Details:\n<br>";
 foreach($TicketData as $key => $value) {
     if ($value) {
-        print "$key: $value\n";
+        print "$key: $value\n<br>";
     }
 }
 
@@ -156,12 +131,12 @@ if ($response->body && property_exists($response->body, 'Error')) {
     $ErrorCode = $response->body->Error->ErrorCode;
     $ErrorMessage = $response->body->Error->ErrorMessage;
     print "\n\n";
-    print "ErrorCode $ErrorCode\n\n";
-    print "ErrorMessage $ErrorMessage\n\n";
+    print "ErrorCode $ErrorCode\n\n<br>";
+    print "ErrorMessage $ErrorMessage\n\n<br>";
     print "\n\n";
     exit(1);
 }
 print "\nNotice: \n";
-print "\nSessionID $SessionID has been terminated.\n\n";
+print "<br>\nSessionID $SessionID is finished.\n\n<br>";
 
 ?>

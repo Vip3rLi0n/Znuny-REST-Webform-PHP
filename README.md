@@ -1,26 +1,26 @@
-### Using the Generic Interface REST of the ((OTRS)) Community Edition with PHP
+### Using the created php script to create ticket through webpage form.
 
-Update:
-- ✅ Updated for Znuny 6.4
-- ✅ Updated to use latest Unirest-PHP library
-- ✅ Updated to work with PHP 8.x
+News:
+- ✅ Compatible with Znuny 6
+- ✅ Using latest library
+- ✅ Works with PHP7, PHP-FPM and PHP8.
 
 ### Requirements
-- [Znuny](https://github.com/znuny/Znuny) version 6.4
-- [PHP](https://github.com/php) version 8.x with Composer
+- [Znuny](https://github.com/znuny/Znuny) version 6+
+- [PHP](https://github.com/php) version 7+ with Composer
 - Specific Agent account for Webservice usage
 
 ## Prepare your ticket system
-- First, download the web service configuration from [GitHub](https://github.com/Ni3zam/znuny-gi-rest-php/raw/main/GenericTicketConnectorREST.yaml).
+- First, download the web service configuration from [GitHub](https://github.com/Ni3zam/Znuny-REST-Webform-PHP/raw/main/GenericTicketConnectorREST.yaml).
 - Navigate as an admin to `Admin` => `Web Service Management` => `Add Web Service` => `Import web service`. Enter a name for the web service.
 - I suggest to use `GenericTicketConnectorREST` because this is used in the example.
 
 ## Install example client
-- Clone this repository and run `composer update` to add the [Guzzle](https://github.com/guzzle/guzzle) library:
+- Clone this repository and run `composer update` to add the [Unirest](https://github.com/apimatic/unirest-php) library:
 
 ```bash
-$ git clone https://github.com/Ni3zam/znuny-gi-rest-php.git php-rest-client
-$ cd php-rest-client
+$ git clone https://github.com/Ni3zam/Znuny-REST-Webform-PHP webform
+$ cd webform
 $ composer update
 ```
 
@@ -32,12 +32,12 @@ $ composer update
 - [Password](https://github.com/Ni3zam/znuny-gi-rest-php/blob/main/client.php#L18).
 
 ## Run your client
-Your client is ready to go and can be executed by `php client.php`
+Your client is ready to go and can be executed by going to `/test.html`
 
 ### Misc
 An introduction for the Generic Interface for the latest ((OTRS)) Community Editon is available in the [Online Manual](https://doc.otrs.com/doc/manual/admin/6.0/en/html/genericinterface.html).
 
-The default operations TicketCreate and TicketUpdate are not able to send a new article via e-mail. For this use case you could install the free add-on [Znuny4OTRS-GIArticleSend](https://github.com/znuny/Znuny4OTRS-GIArticleSend).
+The default operations TicketCreate and TicketUpdate are not able to send a **new** article via e-mail. For this use case you could install the free add-on [Znuny4OTRS-GIArticleSend](https://github.com/znuny/Znuny4OTRS-GIArticleSend).
 
 
 ### Credit

@@ -32,7 +32,7 @@ if (!$response->body||!property_exists($response->body,'SessionID')) {
     exit(1);
 }
 $SessionID = $response->body->SessionID;
-print "\nNotice: \n"<br>;
+print "\nNotice: \n<br>";
 print "SessionID obtained. Your SessionID is $SessionID\n<br><br>";
 
 

@@ -40,38 +40,58 @@ print "SessionID obtained. Your SessionID is $SessionID\n<br><br>";
 /**
  * TicketCreate
  *
- * https://doc.otrs.com/doc/api/otrs/6.0/Perl/Kernel/GenericInterface/Operation/Ticket/TicketCreate.pm.html
+ * Updated with upload function by Nizzy.
  */
-$Title= $_POST['Title'];
-$CustomerUser= $_POST['CustomerUser'];
-$Queue= $_POST['Queue'];
-$ArticleTitle= $_POST['ArticleTitle'];
-$ArticleField= $_POST['ArticleField'];
-$Priority= $_POST['Priority'];
-echo ("Your ticket has been sent.\n<br>");
+if (isset($_POST['submit'])) {
+    $Title = $_POST['Title'];
+    $CustomerUser = $_POST['CustomerUser'];
+    $Queue = $_POST['Queue'];
+    $ArticleTitle = $_POST['ArticleTitle'];
+    $ArticleField = $_POST['ArticleField'];
+    $Priority = $_POST['Priority'];
+
+    // Set the target directory for the uploaded file
+    $target_dir = "/tmp/uploads/";
+    $file = $_FILES['file'];
+
+    // Move the uploaded file to the target directory
+    if (move_uploaded_file($file['tmp_name'], $target_dir . $file['name'])) {
+        $full_path = $target_dir . $file['name'];
+        echo "The file " . $file['name'] . " has been uploaded to the " . $target_dir . " directory.<br>";
+        echo "The full path of the uploaded file is: " . $full_path;
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+}
+// Encode the data as a JSON object
 $body = json_encode([
-        'SessionID' => $SessionID,
-        'Ticket' => [
-            'Title' => $Title,
-            'Queue' => $Queue,
-            'CustomerUser' => $CustomerUser,
-            'State' => 'new',
-            'Priority' => $Priority,
-            'OwnerID' => 1,
-        ],
-        'Article' =>[
-            'CommunicationChannel' => 'Email',
-            'ArticleTypeID' => 1,
-            'SenderTypeID' => 1,
-            'Subject' => $ArticleTitle,
-            'Body' => $ArticleField,
-            'ContentType' => 'text/plain; charset=utf8',
-            'Charset' => 'utf8',
-            'MimeType' => 'text/plain',
-            'From' => $CustomerUser,
-        ],
+    'SessionID' => $SessionID,
+    'Ticket' => [
+        'Title' => $Title,
+        'Queue' => $Queue,
+        'CustomerUser' => $CustomerUser,
+        'State' => 'new',
+        'Priority' => $Priority,
+        'OwnerID' => 1,
+    ],
+    'Article' => [
+        'CommunicationChannel' => 'Email',
+        'ArticleTypeID' => 1,
+        'SenderTypeID' => 1,
+        'Subject' => $ArticleTitle,
+        'Body' => $ArticleField,
+        'ContentType' => 'text/plain; charset=utf8',
+        'Charset' => 'utf8',
+        'MimeType' => 'text/plain',
+        'From' => $CustomerUser,
+    ],
+    'Attachment' => [
+        'Content' => $AttachmentContent,
+        'ContentType' => $_FILES['file']['type'],
+        'Filename' => $_FILES['file']['name'],
     ]
-);
+]);
+echo ("Your ticket has been sent.\n<br>");
 
 $response = Request::post($BaseURL."/Ticket", $headers, $body);
 if ($response->body && property_exists($response->body, 'Error')) {

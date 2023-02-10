@@ -32,7 +32,7 @@ if (!$response->body||!property_exists($response->body,'SessionID')) {
     exit(1);
 }
 $SessionID = $response->body->SessionID;
-print "\nNotice: \n"<br>;
+print "\nNotice: \n<br>";
 print "SessionID obtained. Your SessionID is $SessionID\n<br><br>";
 
 
@@ -47,6 +47,7 @@ $CustomerUser= $_POST['CustomerUser'];
 $Queue= $_POST['Queue'];
 $ArticleTitle= $_POST['ArticleTitle'];
 $ArticleField= $_POST['ArticleField'];
+$Priority= $_POST['Priority'];
 echo ("Your ticket has been sent.\n<br>");
 $body = json_encode([
         'SessionID' => $SessionID,
@@ -55,7 +56,7 @@ $body = json_encode([
             'Queue' => $Queue,
             'CustomerUser' => $CustomerUser,
             'State' => 'new',
-            'Priority' => '3 normal',
+            'Priority' => $Priority,
             'OwnerID' => 1,
         ],
         'Article' =>[

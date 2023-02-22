@@ -1,0 +1,31 @@
+.toast-success {
+    background-color: #7FFFD4 !important;
+    color: white !important;
+  }
+  
+  .toast-error {
+    background-color: #DE3163 !important;
+    color: white !important;
+  }
+  
+  .swal2-title {
+    color: black !important;
+  }
+  
+  .swal2-title.toast-error {
+    color: white !important;
+  }
+  
+  .swal2-success-line-long {
+    color: cyan !important;
+  }
+  
+  .swal2-success-line-tip {
+    color: cyan !important;
+  }
+  
+  .swal2-backdrop-blur {
+    filter: blur(150px) !important;
+    pointer-events: none !important;
+    background-color: #000 !important;
+  }

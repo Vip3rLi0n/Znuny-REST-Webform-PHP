@@ -1,5 +1,10 @@
 ### Using the created php script to create ticket through webpage form.
 
+Note:
+- ⚠️ Change icons to your icon.
+- ⚠️ Make sure to use `composer update`
+- ⚠️ Some code are not clean yet.
+
 News:
 - ✅ Compatible with Znuny 6 and 7
 - ✅ Using latest library

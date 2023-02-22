@@ -37,33 +37,8 @@ $SessionID = $response->body->SessionID;
 /**
  * TicketCreate
  *
- * Updated with upload function by Nizzy. (In Progress!)
- */
-/*
-if (isset($_POST['btnSubmit'])) {
-    $Title = $_POST['Title'];
-    $CustomerUser = $_POST['CustomerUser'];
-    $Queue = $_POST['Queue'];
-    $ArticleTitle = $_POST['ArticleTitle'];
-    $ArticleField = $_POST['ArticleField'];
-    $Priority = $_POST['Priority'];
-
-
-    // Set the target directory for the uploaded file
-    $target_dir = "/tmp/uploads/";
-    $file = $_FILES['file'];
-
-    // Move the uploaded file to the target directory
-    if (move_uploaded_file($file['tmp_name'], $target_dir . $file['name'])) {
-        $full_path = $target_dir . $file['name'];
-        echo "The file " . $file['name'] . " has been uploaded to the " . $target_dir . " directory.<br>";
-        echo "The full path of the uploaded file is: " . $full_path;
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
-}
-*/
-
+ * 
+ **/
 $Title = $_POST['Title'];
 $CustomerUser = $_POST['CustomerUser'];
 $Queue = $_POST['Queue'];
@@ -92,13 +67,6 @@ $body = json_encode([
         'MimeType' => 'text/plain',
         'From' => $CustomerUser,
     ]
-    /*
-    'Attachment' => [
-        'Content' => $AttachmentContent,
-        'ContentType' => $_FILES['file']['type'],
-        'Filename' => $_FILES['file']['name'],
-    ]
-    */
 ]);
 
 

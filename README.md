@@ -6,7 +6,7 @@ Note:
 - ❓ I will add file upload functionality in the future.
 
 News:
-- ✅ Compatible with Znuny 6
+- ✅ Compatible with Znuny 6 and 7
 - ✅ Using latest library
 - ✅ Works with PHP7, PHP-FPM and PHP8.
 

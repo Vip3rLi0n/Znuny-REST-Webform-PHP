@@ -8,14 +8,14 @@ Request::defaultHeader("Accept", "application/json");
 Request::defaultHeader("Content-Type", "application/json");
 Request::verifyPeer(true);
 
-$FQDN = 'FIXME';
+$FQDN = 'test.itsquare.pt';
 $WebServiceName = 'GenericTicketConnectorREST';
 $BaseURL = "https://$FQDN/otrs/nph-genericinterface.pl/Webservice/$WebServiceName";
 $headers = [];
 $body = json_encode(
     [
-        "UserLogin" => "FIXME",
-        "Password"  => "FIXME",
+        "UserLogin" => "wc",
+        "Password"  => "wc",
     ]
 );
 
@@ -28,27 +28,26 @@ $body = json_encode(
  */
 $response = Request::post($BaseURL."/Session", $headers, $body);
 if (!$response->body||!property_exists($response->body,'SessionID')) {
-    print "No SessionID were received. \n<br>";
     exit(1);
 }
 $SessionID = $response->body->SessionID;
-print "\nNotice: \n<br>";
-print "SessionID obtained. Your SessionID is $SessionID\n<br><br>";
 
 
 
 /**
  * TicketCreate
  *
- * Updated with upload function by Nizzy.
+ * Updated with upload function by Nizzy. (In Progress!)
  */
-if (isset($_POST['submit'])) {
+/*
+if (isset($_POST['btnSubmit'])) {
     $Title = $_POST['Title'];
     $CustomerUser = $_POST['CustomerUser'];
     $Queue = $_POST['Queue'];
     $ArticleTitle = $_POST['ArticleTitle'];
     $ArticleField = $_POST['ArticleField'];
     $Priority = $_POST['Priority'];
+
 
     // Set the target directory for the uploaded file
     $target_dir = "/tmp/uploads/";
@@ -63,6 +62,14 @@ if (isset($_POST['submit'])) {
         echo "Sorry, there was an error uploading your file.";
     }
 }
+*/
+
+$Title = $_POST['Title'];
+$CustomerUser = $_POST['CustomerUser'];
+$Queue = $_POST['Queue'];
+$ArticleTitle = $_POST['ArticleTitle'];
+$ArticleField = $_POST['ArticleField'];
+$Priority = $_POST['Priority'];
 // Encode the data as a JSON object
 $body = json_encode([
     'SessionID' => $SessionID,
@@ -75,7 +82,7 @@ $body = json_encode([
         'OwnerID' => 1,
     ],
     'Article' => [
-        'CommunicationChannel' => 'Email',
+        'CommunicationChannel' => 'Phone',
         'ArticleTypeID' => 1,
         'SenderTypeID' => 1,
         'Subject' => $ArticleTitle,
@@ -84,30 +91,26 @@ $body = json_encode([
         'Charset' => 'utf8',
         'MimeType' => 'text/plain',
         'From' => $CustomerUser,
-    ],
+    ]
+    /*
     'Attachment' => [
         'Content' => $AttachmentContent,
         'ContentType' => $_FILES['file']['type'],
         'Filename' => $_FILES['file']['name'],
     ]
+    */
 ]);
-echo ("Your ticket has been sent.\n<br>");
+
 
 $response = Request::post($BaseURL."/Ticket", $headers, $body);
 if ($response->body && property_exists($response->body, 'Error')) {
     $ErrorCode = $response->body->Error->ErrorCode;
     $ErrorMessage = $response->body->Error->ErrorMessage;
-    print "\n\n";
-    print "ErrorCode $ErrorCode\n\n<br>";
-    print "ErrorMessage $ErrorMessage\n\n<br>";
-    print "\n\n";
     exit(1);
 }
 $TicketNumber = $response->body->TicketNumber;
 $TicketID = $response->body->TicketID;
 $ArticleID = $response->body->ArticleID;
-print "<br>\nNotice: \n<br>";
-print "\nThe ticket $TicketNumber was created. Check it via https://$FQDN/otrs/index.pl?Action=AgentTicketZoom;TicketID=$TicketID\n\n<br>br>";
 
 
 
@@ -123,17 +126,12 @@ $response = Unirest\Request::get($BaseURL."/Ticket/${TicketID}?Extended=1", $hea
 if ($response->body && property_exists($response->body, 'Error')) {
         $ErrorCode = $response->body->Error->ErrorCode;
         $ErrorMessage = $response->body->Error->ErrorMessage;
-        print "\n\n";
-        print "ErrorCode $ErrorCode\n\n<br>";
-        print "ErrorMessage $ErrorMessage\n\n<br>";
-        print "\n\n";
         exit(1);
 }
 $TicketData = $response->body->Ticket[0];
-print "<br>\nTicket Details:\n<br>";
 foreach($TicketData as $key => $value) {
     if ($value) {
-        print "$key: $value\n<br>";
+        $Data = "$key: $value";
     }
 }
 
@@ -151,13 +149,7 @@ $response = Unirest\Request::delete($BaseURL."/Session", $headers, $param);
 if ($response->body && property_exists($response->body, 'Error')) {
     $ErrorCode = $response->body->Error->ErrorCode;
     $ErrorMessage = $response->body->Error->ErrorMessage;
-    print "\n\n";
-    print "ErrorCode $ErrorCode\n\n<br>";
-    print "ErrorMessage $ErrorMessage\n\n<br>";
-    print "\n\n";
     exit(1);
 }
-print "\nNotice: \n";
-print "<br>\nSessionID $SessionID is finished.\n\n<br>";
 
 ?>

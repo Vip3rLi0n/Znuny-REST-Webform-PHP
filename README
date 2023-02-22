@@ -1,12 +1,7 @@
 ### Using the created php script to create ticket through webpage form.
 
-Note:
-- ❓ form.html is not a clean code, change according to your usage!
-- ❓ This is dev build, so expect broken stuff!
-- ❓ I will add file upload functionality in the future.
-
 News:
-- ✅ Compatible with Znuny 6
+- ✅ Compatible with Znuny 6 and 7
 - ✅ Using latest library
 - ✅ Works with PHP7, PHP-FPM and PHP8.
 
